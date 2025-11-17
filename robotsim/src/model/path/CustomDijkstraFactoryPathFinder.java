@@ -20,18 +20,16 @@ public class CustomDijkstraFactoryPathFinder extends AbstractFactoryPathFinder<G
 		implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 6996131946200605552L;
 
-	public CustomDijkstraFactoryPathFinder(final Factory factoryModel,
-			final int resolution) {
+	public CustomDijkstraFactoryPathFinder(final Factory factoryModel, final int resolution) {
 		super(factoryModel, resolution);
 	}
 
 	@Override
-	public List<Position> findPath(final Component sourceComponent,
-			final Component targetComponent) {
+	public List<Position> findPath(final Component sourceComponent, final Component targetComponent) {
 		buildGraph();
 
 		final Position sourcePosition = sourceComponent.getPosition();
@@ -59,8 +57,7 @@ public class CustomDijkstraFactoryPathFinder extends AbstractFactoryPathFinder<G
 	}
 
 	@Override
-	protected SquareVertex getVertex(final int xIndex,
-			final int yIndex) {
+	protected SquareVertex getVertex(final int xIndex, final int yIndex) {
 		final Iterator<SquareVertex> iterator = getGraphVertexesIterator();
 		final int resolution = getResolution();
 		final Position position = new Position(xIndex * resolution, yIndex * resolution);
@@ -77,8 +74,7 @@ public class CustomDijkstraFactoryPathFinder extends AbstractFactoryPathFinder<G
 	}
 
 	@Override
-	protected float overlayedSurface(final SquareVertex vertex,
-			final PositionedShape shape) {
+	protected float overlayedSurface(final SquareVertex vertex, final PositionedShape shape) {
 		return vertex.getShape().getOverlayedSurface(shape);
 	}
 
@@ -94,19 +90,15 @@ public class CustomDijkstraFactoryPathFinder extends AbstractFactoryPathFinder<G
 	}
 
 	@Override
-	protected boolean addVertex(final int xCoordinate,
-			final int yCoordinate) {
+	protected boolean addVertex(final int xCoordinate, final int yCoordinate) {
 		final int resolution = getResolution();
 		final Vertex vertex = new SquareVertex("(" + xCoordinate / resolution + ", " + yCoordinate / resolution + ")",
-				xCoordinate,
-				yCoordinate,
-				resolution);
+				xCoordinate, yCoordinate, resolution);
 		return getGraph().addVertex(vertex);
 	}
 
 	@Override
-	protected boolean addEdge(final SquareVertex vertex1,
-			final SquareVertex vertex2) {
+	protected boolean addEdge(final SquareVertex vertex1, final SquareVertex vertex2) {
 		final GridGraph graph = getGraph();
 		final Edge edge = new GridEdge(graph, vertex1, vertex2, 1);
 		vertex1.addEdge(edge);

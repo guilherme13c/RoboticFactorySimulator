@@ -6,9 +6,7 @@ public class Conveyor extends Component {
 
 	private static final long serialVersionUID = 3686048824190456547L;
 
-	public Conveyor(final Factory factory,
-			final PositionedShape shape,
-			final String name) {
+	public Conveyor(final Factory factory, final PositionedShape shape, final String name) {
 		super(factory, shape, name);
 	}
 

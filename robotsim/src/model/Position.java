@@ -10,8 +10,7 @@ public class Position implements Serializable {
 
 	private int yCoordinate;
 
-	public Position(final int xCoordinate,
-			final int yCoordinate) {
+	public Position(final int xCoordinate, final int yCoordinate) {
 		super();
 
 		this.xCoordinate = xCoordinate;

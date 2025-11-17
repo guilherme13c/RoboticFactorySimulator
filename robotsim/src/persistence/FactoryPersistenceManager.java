@@ -16,7 +16,7 @@ import fr.tp.inf112.projects.canvas.model.CanvasChooser;
 import fr.tp.inf112.projects.canvas.model.impl.AbstractCanvasPersistenceManager;
 
 public class FactoryPersistenceManager extends AbstractCanvasPersistenceManager {
-	
+
 	public FactoryPersistenceManager(final CanvasChooser canvasChooser) {
 		super(canvasChooser);
 	}
@@ -25,16 +25,12 @@ public class FactoryPersistenceManager extends AbstractCanvasPersistenceManager 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Canvas read(final String canvasId)
-	throws IOException {
-		try (
-			final InputStream fileInputStream = new FileInputStream(canvasId);
-			final InputStream bufInputStream = new BufferedInputStream(fileInputStream);
-			final ObjectInputStream objectInputStrteam = new ObjectInputStream(bufInputStream);
-		) {
+	public Canvas read(final String canvasId) throws IOException {
+		try (final InputStream fileInputStream = new FileInputStream(canvasId);
+				final InputStream bufInputStream = new BufferedInputStream(fileInputStream);
+				final ObjectInputStream objectInputStrteam = new ObjectInputStream(bufInputStream);) {
 			return (Canvas) objectInputStrteam.readObject();
-		}
-		catch (ClassNotFoundException | IOException ex) {
+		} catch (ClassNotFoundException | IOException ex) {
 			throw new IOException(ex);
 		}
 
@@ -44,13 +40,10 @@ public class FactoryPersistenceManager extends AbstractCanvasPersistenceManager 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void persist(Canvas canvasModel)
-	throws IOException {
-		try (
-			final OutputStream fileOutStream = new FileOutputStream(canvasModel.getId());
-			final OutputStream bufOutStream = new BufferedOutputStream(fileOutStream);
-			final ObjectOutputStream objOutStream = new ObjectOutputStream(bufOutStream);
-		) {	
+	public void persist(Canvas canvasModel) throws IOException {
+		try (final OutputStream fileOutStream = new FileOutputStream(canvasModel.getId());
+				final OutputStream bufOutStream = new BufferedOutputStream(fileOutStream);
+				final ObjectOutputStream objOutStream = new ObjectOutputStream(bufOutStream);) {
 			objOutStream.writeObject(canvasModel);
 		}
 	}
@@ -59,10 +52,9 @@ public class FactoryPersistenceManager extends AbstractCanvasPersistenceManager 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean delete(final Canvas canvasModel)
-	throws IOException {
+	public boolean delete(final Canvas canvasModel) throws IOException {
 		final File canvasFile = new File(canvasModel.getId());
-		
+
 		return canvasFile.delete();
 	}
 }

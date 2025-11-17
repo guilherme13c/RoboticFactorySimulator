@@ -8,10 +8,7 @@ public class SquareVertex extends GridVertex {
 
 	private final RectangularShape shape;
 
-	public SquareVertex(final String label,
-			final int xCoordinate,
-			final int yCoordinate,
-			final int size) {
+	public SquareVertex(final String label, final int xCoordinate, final int yCoordinate, final int size) {
 		super(label, xCoordinate, yCoordinate);
 
 		this.shape = new RectangularShape(xCoordinate, yCoordinate, size, size);

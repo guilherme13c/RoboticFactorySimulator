@@ -12,9 +12,7 @@ public class Area extends Component {
 
 	private Machine machine;
 
-	public Area(final Room room,
-			final RectangularShape shape,
-			final String name) {
+	public Area(final Room room, final RectangularShape shape, final String name) {
 		super(room.getFactory(), shape, name);
 
 		room.addArea(this);

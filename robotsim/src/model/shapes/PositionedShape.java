@@ -9,9 +9,7 @@ public abstract class PositionedShape implements Shape, Serializable {
 
 	private static final long serialVersionUID = 2217860927757709195L;
 
-	private static float intersectionLength(final int coordinate1,
-			final int width1,
-			final int coordinate2,
+	private static float intersectionLength(final int coordinate1, final int width1, final int coordinate2,
 			final int width2) {
 		if (coordinate1 <= coordinate2) {
 			if (coordinate1 + width1 >= coordinate2) {
@@ -30,8 +28,7 @@ public abstract class PositionedShape implements Shape, Serializable {
 
 	private final Position position;
 
-	protected PositionedShape(final int xCoordinate,
-			final int yCoordinate) {
+	protected PositionedShape(final int xCoordinate, final int yCoordinate) {
 		this.position = new Position(xCoordinate, yCoordinate);
 	}
 

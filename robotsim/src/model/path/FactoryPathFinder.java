@@ -7,6 +7,5 @@ import model.Position;
 
 public interface FactoryPathFinder {
 
-	List<Position> findPath(Component sourceComponent,
-			Component targetComponent);
+	List<Position> findPath(Component sourceComponent, Component targetComponent);
 }

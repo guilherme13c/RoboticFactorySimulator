@@ -12,7 +12,7 @@ import model.shapes.PositionedShape;
 public abstract class Component implements Figure, Serializable, Runnable {
 
 	private static transient Logger LOGGER = Logger.getLogger(Component.class.getName());
-	
+
 	private static final long serialVersionUID = -5960950869184030220L;
 
 	private String id;
@@ -87,6 +87,7 @@ public abstract class Component implements Figure, Serializable, Runnable {
 		getFactory().notifyObservers();
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}

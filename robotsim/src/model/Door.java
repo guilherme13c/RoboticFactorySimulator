@@ -11,53 +11,47 @@ public class Door extends Component {
 
 	private static final int THICKNESS = 1;
 
-	private static int computexCoordinate(final Room room,
-			final Room.WALL wall,
-			final int offset) {
+	private static int computexCoordinate(final Room room, final Room.WALL wall, final int offset) {
 		switch (wall) {
-			case BOTTOM:
-			case TOP: {
-				return room.getxCoordinate() + offset;
-			}
-			case LEFT: {
-				return room.getxCoordinate();
-			}
+		case BOTTOM:
+		case TOP: {
+			return room.getxCoordinate() + offset;
+		}
+		case LEFT: {
+			return room.getxCoordinate();
+		}
 
-			case RIGHT: {
-				return room.getxCoordinate() + room.getWidth();
-			}
+		case RIGHT: {
+			return room.getxCoordinate() + room.getWidth();
+		}
 
-			default: {
-				throw new IllegalArgumentException("Unexpected value: " + wall);
-			}
+		default: {
+			throw new IllegalArgumentException("Unexpected value: " + wall);
+		}
 		}
 	}
 
-	private static int computeyCoordinate(final Room room,
-			final Room.WALL wall,
-			final int offset) {
+	private static int computeyCoordinate(final Room room, final Room.WALL wall, final int offset) {
 		switch (wall) {
-			case LEFT:
-			case RIGHT: {
-				return room.getyCoordinate() + offset;
-			}
-			case TOP: {
-				return room.getyCoordinate();
-			}
+		case LEFT:
+		case RIGHT: {
+			return room.getyCoordinate() + offset;
+		}
+		case TOP: {
+			return room.getyCoordinate();
+		}
 
-			case BOTTOM: {
-				return room.getyCoordinate() + room.getHeight();
-			}
+		case BOTTOM: {
+			return room.getyCoordinate() + room.getHeight();
+		}
 
-			default: {
-				throw new IllegalArgumentException("Unexpected value: " + wall);
-			}
+		default: {
+			throw new IllegalArgumentException("Unexpected value: " + wall);
+		}
 		}
 	}
 
-	private static PositionedShape createShape(final Room room,
-			final Room.WALL wall,
-			final int offset,
+	private static PositionedShape createShape(final Room room, final Room.WALL wall, final int offset,
 			final int doorWidth) {
 		final int xCoordinate = computexCoordinate(room, wall, offset);
 		final int yCoordinate = computeyCoordinate(room, wall, offset);
@@ -75,15 +69,9 @@ public class Door extends Component {
 
 	private static final Style OPEN_STYLE = new ComponentStyle(RGBColor.WHITE, null, 0, null);
 
-	public Door(final Room room,
-			final Room.WALL wall,
-			final int offset,
-			final int doorWidth,
-			final boolean open,
+	public Door(final Room room, final Room.WALL wall, final int offset, final int doorWidth, final boolean open,
 			final String name) {
-		super(room.getFactory(),
-				createShape(room, wall, offset, doorWidth),
-				name);
+		super(room.getFactory(), createShape(room, wall, offset, doorWidth), name);
 
 		this.room = room;
 		this.room.addDoor(this);

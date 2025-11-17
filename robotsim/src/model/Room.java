@@ -12,7 +12,7 @@ public class Room extends Component {
 
 	public static enum WALL {
 		LEFT, TOP, RIGHT, BOTTOM
-	};
+	}
 
 	private static final int WALL_THICKNESS = 5;
 
@@ -28,9 +28,7 @@ public class Room extends Component {
 
 	private final List<Door> doors;
 
-	public Room(final Factory factory,
-			final RectangularShape shape,
-			final String name) {
+	public Room(final Factory factory, final RectangularShape shape, final String name) {
 		super(factory, shape, name);
 
 		leftWall = new RectangularShape(getxCoordinate(), getyCoordinate(), WALL_THICKNESS,
@@ -62,8 +60,8 @@ public class Room extends Component {
 
 	@Override
 	public boolean overlays(final PositionedShape shape) {
-		return leftWall.overlays(shape) || rightWall.overlays(shape) ||
-				topWall.overlays(shape) || bottomWall.overlays(shape);
+		return leftWall.overlays(shape) || rightWall.overlays(shape) || topWall.overlays(shape)
+				|| bottomWall.overlays(shape);
 	}
 
 	@Override
@@ -74,8 +72,8 @@ public class Room extends Component {
 			return overlayedDoor.canBeOverlayed(shape);
 		}
 
-		if (leftWall.overlays(shape) || rightWall.overlays(shape) ||
-				topWall.overlays(shape) || bottomWall.overlays(shape)) {
+		if (leftWall.overlays(shape) || rightWall.overlays(shape) || topWall.overlays(shape)
+				|| bottomWall.overlays(shape)) {
 			return false;
 		}
 

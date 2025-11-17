@@ -7,9 +7,7 @@ public class Machine extends Component {
 
 	private static final long serialVersionUID = -1568908860712776436L;
 
-	public Machine(final Area area,
-			final RectangularShape shape,
-			final String name) {
+	public Machine(final Area area, final RectangularShape shape, final String name) {
 		super(area.getFactory(), shape, name);
 
 		area.setMachine(this);

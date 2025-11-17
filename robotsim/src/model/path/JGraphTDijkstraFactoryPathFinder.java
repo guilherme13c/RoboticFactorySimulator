@@ -23,18 +23,16 @@ public class JGraphTDijkstraFactoryPathFinder
 		implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -7396132432169002382L;
 
-	public JGraphTDijkstraFactoryPathFinder(final Factory factoryModel,
-			final int resolution) {
+	public JGraphTDijkstraFactoryPathFinder(final Factory factoryModel, final int resolution) {
 		super(factoryModel, resolution);
 	}
 
 	@Override
-	public List<Position> findPath(final Component sourceComponent,
-			final Component targetComponent) {
+	public List<Position> findPath(final Component sourceComponent, final Component targetComponent) {
 		buildGraph();
 
 		final PositionedShape sourceVertex = getVertex(sourceComponent.getPosition());
@@ -60,8 +58,7 @@ public class JGraphTDijkstraFactoryPathFinder
 	}
 
 	@Override
-	protected PositionedShape getVertex(final int xIndex,
-			final int yIndex) {
+	protected PositionedShape getVertex(final int xIndex, final int yIndex) {
 		final Iterator<PositionedShape> iterator = getGraphVertexesIterator();
 		final int resolution = getResolution();
 		final Position position = new Position(xIndex * resolution, yIndex * resolution);
@@ -78,8 +75,7 @@ public class JGraphTDijkstraFactoryPathFinder
 	}
 
 	@Override
-	protected float overlayedSurface(final PositionedShape vertex,
-			final PositionedShape shape) {
+	protected float overlayedSurface(final PositionedShape vertex, final PositionedShape shape) {
 		return vertex.getOverlayedSurface(shape);
 	}
 
@@ -90,22 +86,17 @@ public class JGraphTDijkstraFactoryPathFinder
 
 	@Override
 	protected DefaultDirectedGraph<PositionedShape, DefaultEdge> newGraph() {
-		return new DefaultDirectedGraph<PositionedShape, DefaultEdge>(DefaultEdge.class);
+		return new DefaultDirectedGraph<>(DefaultEdge.class);
 	}
 
 	@Override
-	protected boolean addVertex(final int xCoordinate,
-			final int yCoordinate) {
-		final PositionedShape vertex = new RectangularShape(xCoordinate,
-				yCoordinate,
-				getResolution(),
-				getResolution());
+	protected boolean addVertex(final int xCoordinate, final int yCoordinate) {
+		final PositionedShape vertex = new RectangularShape(xCoordinate, yCoordinate, getResolution(), getResolution());
 		return getGraph().addVertex(vertex);
 	}
 
 	@Override
-	protected boolean addEdge(final PositionedShape vertex1,
-			final PositionedShape vertex2) {
+	protected boolean addEdge(final PositionedShape vertex1, final PositionedShape vertex2) {
 		return getGraph().addEdge(vertex1, vertex2) != null;
 	}
 

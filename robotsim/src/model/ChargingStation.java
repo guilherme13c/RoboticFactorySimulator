@@ -9,15 +9,11 @@ public class ChargingStation extends Component {
 
 	private boolean charging;
 
-	public ChargingStation(final Room room,
-			final RectangularShape shape,
-			final String name) {
+	public ChargingStation(final Room room, final RectangularShape shape, final String name) {
 		this(room.getFactory(), shape, name);
 	}
 
-	public ChargingStation(final Factory factory,
-			final RectangularShape shape,
-			final String name) {
+	public ChargingStation(final Factory factory, final RectangularShape shape, final String name) {
 		super(factory, shape, name);
 
 		charging = false;

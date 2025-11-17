@@ -16,8 +16,7 @@ public class SimulatorController implements CanvasViewerController {
 		this(null, persistenceManager);
 	}
 
-	public SimulatorController(final Factory factoryModel,
-			final CanvasPersistenceManager persistenceManager) {
+	public SimulatorController(final Factory factoryModel, final CanvasPersistenceManager persistenceManager) {
 		this.factoryModel = factoryModel;
 		this.persistenceManager = persistenceManager;
 	}

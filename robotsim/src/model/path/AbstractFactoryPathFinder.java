@@ -13,7 +13,7 @@ import model.shapes.RectangularShape;
 public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements FactoryPathFinder, Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 3864762720560889146L;
 
@@ -23,8 +23,7 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 
 	private transient Graph graph;
 
-	public AbstractFactoryPathFinder(final Factory factoryModel,
-			final int resolution) {
+	public AbstractFactoryPathFinder(final Factory factoryModel, final int resolution) {
 		this.factoryModel = factoryModel;
 		this.resolution = resolution;
 		graph = null;
@@ -73,18 +72,15 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 
 	protected abstract Graph newGraph();
 
-	protected abstract boolean addVertex(int xCoordinate,
-			int yCoordinate);
+	protected abstract boolean addVertex(int xCoordinate, int yCoordinate);
 
-	protected abstract boolean addEdge(Vertex vertex1,
-			Vertex vertex2);
+	protected abstract boolean addEdge(Vertex vertex1, Vertex vertex2);
 
 	protected abstract int getxCoordinate(Vertex vertex);
 
 	protected abstract int getyCoordinate(Vertex vertex);
 
-	protected Set<Vertex> getSuccessors(final int xCoordinate,
-			final int yCoordinate) {
+	protected Set<Vertex> getSuccessors(final int xCoordinate, final int yCoordinate) {
 		final int xIndex = xCoordinate / getResolution();
 		final int yIndex = yCoordinate / getResolution();
 
@@ -141,8 +137,7 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 		return successors;
 	}
 
-	private Vertex getBackwardxVertex(final int xIndex,
-			final int yIndex) {
+	private Vertex getBackwardxVertex(final int xIndex, final int yIndex) {
 		final int searchedxIndex = xIndex - 1;
 
 		if (searchedxIndex >= 0) {
@@ -152,8 +147,7 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 		return null;
 	}
 
-	private Vertex getBackwardyVertex(final int xIndex,
-			final int yIndex) {
+	private Vertex getBackwardyVertex(final int xIndex, final int yIndex) {
 		final int searchedyIndex = yIndex - 1;
 
 		if (searchedyIndex >= 0) {
@@ -163,8 +157,7 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 		return null;
 	}
 
-	private Vertex getForwardxVertex(final int xIndex,
-			final int yIndex) {
+	private Vertex getForwardxVertex(final int xIndex, final int yIndex) {
 		final int searchedxIndex = xIndex + 1;
 
 		if (searchedxIndex < getFactoryModel().getWidth() / getResolution()) {
@@ -174,8 +167,7 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 		return null;
 	}
 
-	private Vertex getForwardyVertex(final int xIndex,
-			final int yIndex) {
+	private Vertex getForwardyVertex(final int xIndex, final int yIndex) {
 		final int searchedyIndex = yIndex + 1;
 
 		if (searchedyIndex < getFactoryModel().getHeight() / getResolution()) {
@@ -185,8 +177,7 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 		return null;
 	}
 
-	protected Vertex getFreeVertex(final int xIndex,
-			final int yIndex) {
+	protected Vertex getFreeVertex(final int xIndex, final int yIndex) {
 		final int resolution = getResolution();
 		final int xCoordinate = xIndex * resolution;
 		final int yCoordinate = yIndex * resolution;
@@ -200,16 +191,13 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 		return null;
 	}
 
-	protected abstract Vertex getVertex(final int xIndex,
-			final int yIndex);
+	protected abstract Vertex getVertex(final int xIndex, final int yIndex);
 
 	protected Vertex getVertex(final Position position) {
 		float currentMaxOverlayedSurface = 0.0f;
 		Vertex maxOverlayedSurfaceVertex = null;
-		final PositionedShape shape = new RectangularShape(position.getxCoordinate(),
-				position.getyCoordinate(),
-				resolution,
-				resolution);
+		final PositionedShape shape = new RectangularShape(position.getxCoordinate(), position.getyCoordinate(),
+				resolution, resolution);
 
 		final Iterator<? extends Vertex> vertexesIterator = getGraphVertexesIterator();
 
@@ -226,8 +214,7 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 		return maxOverlayedSurfaceVertex;
 	}
 
-	protected abstract float overlayedSurface(Vertex vertex,
-			PositionedShape shape);
+	protected abstract float overlayedSurface(Vertex vertex, PositionedShape shape);
 
 	protected abstract Iterator<? extends Vertex> getGraphVertexesIterator();
 }
