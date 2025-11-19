@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2025-11-19T15:29:11.466276373Z</date>
+  <millis>1763566151466</millis>
+  <nanos>276373</nanos>
+  <sequence>0</sequence>
+  <logger>persistence.server.FactoryPersistenceServer</logger>
+  <level>INFO</level>
+  <class>persistence.server.FactoryPersistenceServer</class>
+  <method>run</method>
+  <thread>1</thread>
+  <message>server running on port: 9001</message>
+</record>
+<record>
+  <date>2025-11-19T15:29:17.905478169Z</date>
+  <millis>1763566157905</millis>
+  <nanos>478169</nanos>
+  <sequence>1</sequence>
+  <logger>persistence.server.FactoryPersistenceServer</logger>
+  <level>INFO</level>
+  <class>persistence.server.FactoryPersistenceServer</class>
+  <method>run</method>
+  <thread>1</thread>
+  <message>accepted connection</message>
+</record>
+<record>
+  <date>2025-11-19T15:29:23.652602699Z</date>
+  <millis>1763566163652</millis>
+  <nanos>602699</nanos>
+  <sequence>2</sequence>
+  <logger>persistence.server.FactoryPersistenceServer</logger>
+  <level>INFO</level>
+  <class>persistence.server.FactoryPersistenceServer</class>
+  <method>run</method>
+  <thread>1</thread>
+  <message>accepted connection</message>
+</record>
+<record>
+  <date>2025-11-19T15:29:27.412463656Z</date>
+  <millis>1763566167412</millis>
+  <nanos>463656</nanos>
+  <sequence>3</sequence>
+  <logger>persistence.server.FactoryPersistenceServer</logger>
+  <level>INFO</level>
+  <class>persistence.server.FactoryPersistenceServer</class>
+  <method>run</method>
+  <thread>1</thread>
+  <message>accepted connection</message>
+</record>
+<record>
+  <date>2025-11-19T15:29:35.143679838Z</date>
+  <millis>1763566175143</millis>
+  <nanos>679838</nanos>
+  <sequence>4</sequence>
+  <logger>java.lang.Runtime</logger>
+  <level>FINE</level>
+  <class>java.lang.Shutdown</class>
+  <method>logRuntimeExit</method>
+  <thread>21</thread>
+  <message>Runtime.exit() called with status: 143</message>
+  <exception>
+    <message>java.lang.Throwable: Runtime.exit(143)</message>
+    <frame>
+      <class>java.lang.Shutdown</class>
+      <method>logRuntimeExit</method>
+      <line>179</line>
+    </frame>
+    <frame>
+      <class>java.lang.Shutdown</class>
+      <method>exit</method>
+      <line>160</line>
+    </frame>
+    <frame>
+      <class>java.lang.Terminator$1</class>
+      <method>handle</method>
+      <line>51</line>
+    </frame>
+    <frame>
+      <class>jdk.internal.misc.Signal$1</class>
+      <method>run</method>
+      <line>218</line>
+    </frame>
+    <frame>
+      <class>java.lang.Thread</class>
+      <method>run</method>
+      <line>1583</line>
+    </frame>
+  </exception>
+</record>
+</log>

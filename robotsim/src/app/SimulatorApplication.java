@@ -25,7 +25,7 @@ import model.path.JGraphTDijkstraFactoryPathFinder;
 import model.shapes.BasicPolygonShape;
 import model.shapes.CircularShape;
 import model.shapes.RectangularShape;
-import persistence.FactoryPersistenceManagerClient;
+import persistence.client.FactoryPersistenceManagerClient;
 
 public class SimulatorApplication {
 	private static transient final Logger LOGGER = Logger.getLogger(SimulatorApplication.class.getName());
