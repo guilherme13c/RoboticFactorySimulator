@@ -1,4 +1,6 @@
 .metadata/
-robotsim/bin/
+*/bin/
+
+*.log
 
 data/
