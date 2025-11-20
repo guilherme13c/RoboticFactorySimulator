@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
+import controller.RemoteSimulationController;
 import fr.tp.inf112.projects.canvas.model.impl.BasicVertex;
 import fr.tp.inf112.projects.canvas.view.CanvasViewer;
 import fr.tp.inf112.projects.canvas.view.FileCanvasChooser;
@@ -84,11 +85,10 @@ public class SimulatorApplication {
 		robot2.addTargetComponent(new Conveyor(factory, conveyorShape, "Conveyor 1"));
 
 		SwingUtilities.invokeLater(new Runnable() {
-
 			@Override
 			public void run() {
-				if (args.length < 1) {
-					LOGGER.log(Level.SEVERE, "missing factory persistence manager address arguments");
+				if (args.length < 2) {
+					LOGGER.log(Level.SEVERE, "missing arguments");
 				}
 
 				final String[] factoryPersistenceManagerServerAddress = args[0].split(":");
@@ -102,8 +102,12 @@ public class SimulatorApplication {
 				final FactoryPersistenceManagerClient persistenceClient = new FactoryPersistenceManagerClient(
 						factoryPersistenceManagerServerAddress[0],
 						Integer.parseInt(factoryPersistenceManagerServerAddress[1]), canvasChooser);
-				final Component factoryViewer = new CanvasViewer(new SimulatorController(factory, persistenceClient));
-				canvasChooser.setViewer(factoryViewer);
+
+                final String microserviceUrl = args[1];
+                LOGGER.info("Simulation service addres: " + microserviceUrl);
+				final Component factoryViewer = new CanvasViewer(new RemoteSimulationController(factory, persistenceClient, microserviceUrl));
+				
+                canvasChooser.setViewer(factoryViewer);
 			}
 		});
 	}

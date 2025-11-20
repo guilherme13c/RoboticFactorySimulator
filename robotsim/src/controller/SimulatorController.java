@@ -1,4 +1,4 @@
-package app;
+package controller;
 
 import fr.tp.inf112.projects.canvas.controller.CanvasViewerController;
 import fr.tp.inf112.projects.canvas.controller.Observer;

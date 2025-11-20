@@ -1,5 +1,7 @@
 .metadata/
+
 */bin/
+*.class
 
 *.log
 
