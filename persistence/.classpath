@@ -7,8 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/model"/>
-	<classpathentry kind="lib" path="/model/libs/jgrapht/lib/.logback-classic-1.3.4.jar"/>
-	<classpathentry kind="lib" path="/model/libs/jgrapht/lib/.logback-core-1.3.4.jar"/>
 	<classpathentry kind="lib" path="/model/libs/jgrapht/lib/antlr4-runtime-4.12.0.jar"/>
 	<classpathentry kind="lib" path="/model/libs/jgrapht/lib/apfloat-1.10.1.jar"/>
 	<classpathentry kind="lib" path="/model/libs/jgrapht/lib/commons-lang3-3.12.0.jar"/>
@@ -35,5 +33,8 @@
 	<classpathentry kind="lib" path="/model/libs/jgrapht/lib/webgraph-big-3.7.0.jar"/>
 	<classpathentry kind="lib" path="/model/libs/canvas-viewer.jar"/>
 	<classpathentry kind="lib" path="/model/libs/graph.jar"/>
+	<classpathentry kind="lib" path="/home/guilherme13c/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.20/jackson-annotations-2.20.jar"/>
+	<classpathentry kind="lib" path="/home/guilherme13c/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.19.2/jackson-core-2.19.2.jar"/>
+	<classpathentry kind="lib" path="/home/guilherme13c/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.19.2/jackson-databind-2.19.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -64,11 +64,13 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
     @Override
     public void startAnimation() {
         try {
-            String url = String.format("%s/%s/start", simulationServiceUrl, getEncodedFactoryId());
+        	String url = String.format("%s/start?factoryId=%s", simulationServiceUrl, getEncodedFactoryId());
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .POST(HttpRequest.BodyPublishers.noBody())
                     .build();
+            
+            LOGGER.info(request.toString());
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             
@@ -88,12 +90,14 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
     public void stopAnimation() {
         try {
             simulationRunning = false;
-            String url = String.format("%s/%s/stop", simulationServiceUrl, getEncodedFactoryId());
+            String url = String.format("%s/stop?factoryId=%s", simulationServiceUrl, getEncodedFactoryId());
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .POST(HttpRequest.BodyPublishers.noBody())
                     .build();
 
+            LOGGER.info(request.toString());
+            
             httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error stopping remote simulation", e);
@@ -108,11 +112,13 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
     private void updateViewer() {
         while (simulationRunning) {
             try {
-                String url = String.format("%s/%s", simulationServiceUrl, getEncodedFactoryId());
-                HttpRequest request = HttpRequest.newBuilder()
+            	String url = String.format("%s?factoryId=%s", simulationServiceUrl, getEncodedFactoryId());
+            	HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create(url))
                         .GET()
                         .build();
+            	
+                LOGGER.info(request.toString());
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -121,7 +127,7 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
                     setCanvas(remoteFactory);
                 }
                 
-                Thread.sleep(30); // Refresh rate
+                Thread.sleep(25);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;

@@ -34,17 +34,27 @@ public class FactoryPersistenceManagerClient extends FactoryPersistenceManager {
 	 */
 	@Override
 	public void persist(Canvas canvasModel) throws IOException {
-		try {
-			connect();
+		boolean connected = false;
+		
+		for (int i = 0; i < 100; i++) {
+			try {
+				Thread.sleep(100);
+				connect();
+				connected = true;
+				i = 100;
+			} catch (IOException | InterruptedException e) {
+				continue;
+			}
+		}
+		
+		if (!connected) {
+			throw new IOException("Failed to connect to persistence server");
+		}
+		LOGGER.info("Connected to persistence server succesfully");
 
+		try {
 			out.writeObject(canvasModel);
 			out.flush();
-
-			Boolean status = in.readBoolean();
-
-			if (status) {
-				return;
-			}
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 			throw new IOException("Failed to persist Canvas", e);

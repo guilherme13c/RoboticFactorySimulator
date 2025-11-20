@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.Component;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,9 +33,7 @@ public class SimulatorApplication {
 	private static transient final Logger LOGGER = Logger.getLogger(SimulatorApplication.class.getName());
 
 	public static void main(String[] args) {
-
 		LOGGER.log(Level.INFO, "Starting the robot simulator...");
-
 		LOGGER.log(Level.CONFIG, "With parameters " + Arrays.toString(args) + ".");
 
 		final Factory factory = new Factory(200, 200, "Simple Test Puck Factory");
@@ -103,6 +102,12 @@ public class SimulatorApplication {
 						factoryPersistenceManagerServerAddress[0],
 						Integer.parseInt(factoryPersistenceManagerServerAddress[1]), canvasChooser);
 
+				try {
+					persistenceClient.persist(factory);
+				} catch (IOException e) {
+					LOGGER.log(Level.SEVERE, "Failed to perist factory model: " + factory.toString(), e);
+				}
+				
                 final String microserviceUrl = args[1];
                 LOGGER.info("Simulation service addres: " + microserviceUrl);
 				final Component factoryViewer = new CanvasViewer(new RemoteSimulationController(factory, persistenceClient, microserviceUrl));

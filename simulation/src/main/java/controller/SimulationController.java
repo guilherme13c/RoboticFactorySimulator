@@ -7,8 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.tp.inf112.projects.canvas.model.Canvas;
@@ -29,12 +29,11 @@ public class SimulationController {
     	LOGGER.info("SimulationController initialized.");
     }
     
-    @PostMapping("/{factoryId}/start")
-    public boolean startSimulation(@PathVariable String factoryId) {
+    @PostMapping("/start")
+    public boolean startSimulation(@RequestParam String factoryId) {
         LOGGER.info("Request received to start simulation for factoryId: " + factoryId);
-    	
+    	        
     	Factory factory;
-    	
     	try {
 			factory = (Factory) persistenceManager.read(factoryId);
 		} catch (IOException e) {
@@ -50,8 +49,8 @@ public class SimulationController {
 		return true;
     }
 
-    @GetMapping("/{factoryId}")
-    public Factory getSimulatedModel(@PathVariable String factoryId) {
+    @GetMapping("/")
+    public Factory getSimulatedModel(@RequestParam String factoryId) {
         LOGGER.info("Fetching simulation model status for factoryId: " + factoryId);
         Factory factoryModel = models.get(factoryId);
 
@@ -63,8 +62,8 @@ public class SimulationController {
         return factoryModel;
     }
 
-    @PostMapping("/{factoryId}/stop")
-    public boolean stopSimulation(@PathVariable String factoryId) {
+    @PostMapping("/stop")
+    public boolean stopSimulation(@RequestParam String factoryId) {
         LOGGER.info("Request received to stop simulation for factoryId: " + factoryId);
         Factory factoryModel = models.remove(factoryId);
 

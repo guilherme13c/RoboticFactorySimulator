@@ -1,6 +1,35 @@
-Nov 20, 2025 12:15:25 PM persistence.server.FactoryPersistenceServer run
+Nov 20, 2025 6:42:04 PM persistence.server.FactoryPersistenceServer run
 INFO: server running on port: 9001
-Nov 20, 2025 12:15:36 PM java.lang.Shutdown logRuntimeExit
+Nov 20, 2025 6:42:04 PM persistence.server.FactoryPersistenceServer run
+INFO: accepted connection
+Nov 20, 2025 6:42:04 PM persistence.server.FactoryPersistenceServer run
+WARNING: null
+java.lang.NullPointerException
+	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:221)
+	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:118)
+	at persistence.model.FactoryPersistenceManager.persist(FactoryPersistenceManager.java:44)
+	at persistence.server.FactoryPersistenceServer.run(FactoryPersistenceServer.java:45)
+	at persistence.server.FactoryPersistenceServer.main(FactoryPersistenceServer.java:85)
+
+Nov 20, 2025 6:42:06 PM persistence.server.FactoryPersistenceServer run
+INFO: accepted connection
+Nov 20, 2025 6:42:06 PM persistence.server.FactoryPersistenceServer run
+WARNING: java.io.FileNotFoundException: Simple Test Puck Factory (No such file or directory)
+java.io.IOException: java.io.FileNotFoundException: Simple Test Puck Factory (No such file or directory)
+	at persistence.model.FactoryPersistenceManager.read(FactoryPersistenceManager.java:34)
+	at persistence.server.FactoryPersistenceServer.run(FactoryPersistenceServer.java:41)
+	at persistence.server.FactoryPersistenceServer.main(FactoryPersistenceServer.java:85)
+Caused by: java.io.FileNotFoundException: Simple Test Puck Factory (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:106)
+	at persistence.model.FactoryPersistenceManager.read(FactoryPersistenceManager.java:29)
+	... 2 more
+
+Nov 20, 2025 6:42:16 PM persistence.server.FactoryPersistenceServer run
+INFO: accepted connection
+Nov 20, 2025 6:42:33 PM java.lang.Shutdown logRuntimeExit
 FINE: Runtime.exit() called with status: 143
 java.lang.Throwable: Runtime.exit(143)
 	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)

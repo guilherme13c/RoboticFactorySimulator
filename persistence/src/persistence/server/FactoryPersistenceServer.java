@@ -25,34 +25,29 @@ public class FactoryPersistenceServer {
 		LOGGER.info("server running on port: " + port);
 
 		while (true) {
-			clientSocket = serverSocket.accept();
-			LOGGER.info("accepted connection");
-
-			out = new ObjectOutputStream(clientSocket.getOutputStream());
-			in = new ObjectInputStream(clientSocket.getInputStream());
-
-			FileCanvasChooser fcc = new FileCanvasChooser("factory", "factory simulation");
-			FactoryPersistenceManager fpm = new FactoryPersistenceManager(fcc);
-
-			Object obj;
 			try {
-				obj = in.readObject();
+				clientSocket = serverSocket.accept();
+				LOGGER.info("accepted connection");
+
+				out = new ObjectOutputStream(clientSocket.getOutputStream());
+				in = new ObjectInputStream(clientSocket.getInputStream());
+
+				FileCanvasChooser fcc = new FileCanvasChooser("factory", "factory simulation");
+				FactoryPersistenceManager fpm = new FactoryPersistenceManager(fcc);
+
+				Object obj = in.readObject();
+
+				if (obj instanceof String) {
+					final Canvas canvasModel = fpm.read((String) obj);
+					out.writeObject(canvasModel);
+					out.flush();
+				} else if (obj instanceof Factory) {
+					fpm.persist((Factory) obj);
+				} else {
+					LOGGER.log(Level.INFO, "obj is neither String or Factory");
+				}
 			} catch (Exception e) {
 				LOGGER.log(Level.WARNING, e.getMessage(), e);
-				clientSocket.close();
-				continue;
-			}
-
-			if (obj instanceof String) {
-				final Canvas canvasModel = fpm.read((String) obj);
-				out.writeObject(canvasModel);
-				out.flush();
-			} else if (obj instanceof Factory) {
-				fpm.persist((Factory) obj);
-				out.writeBoolean(true);
-				out.flush();
-			} else {
-				LOGGER.log(Level.INFO, "obj is neither String or Factory");
 			}
 		}
 	}
