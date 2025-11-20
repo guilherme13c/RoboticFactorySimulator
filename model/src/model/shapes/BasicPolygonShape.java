@@ -11,7 +11,7 @@ public class BasicPolygonShape extends PositionedShape implements PolygonShape {
 	private static final long serialVersionUID = -1764316101910546849L;
 
 	private final Set<Vertex> vertices;
-
+	
 	public BasicPolygonShape() {
 		super(0, 0);
 

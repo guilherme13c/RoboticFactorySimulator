@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.tp.inf112.projects.canvas.model.Color;
 import fr.tp.inf112.projects.canvas.model.Stroke;
 import fr.tp.inf112.projects.canvas.model.Style;
@@ -29,7 +31,7 @@ public class ComponentStyle implements Style, Stroke, Serializable {
 
 	private float lineThickness;
 
-	final float[] dashPattern;
+	float[] dashPattern;
 
 	public ComponentStyle() {
 		this(null);
@@ -61,6 +63,7 @@ public class ComponentStyle implements Style, Stroke, Serializable {
 		return lineColor;
 	}
 
+	@JsonIgnore
 	@Override
 	public Stroke getStroke() {
 		return this;

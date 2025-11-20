@@ -8,13 +8,20 @@ public class RectangularShape extends PositionedShape implements RectangleShape 
 
 	private final int width;
 
-	private final int heigth;
+	private final int height;
 
+	public RectangularShape() {
+		super();
+		
+		this.width = 0;
+		this.height = 0;
+	}
+	
 	public RectangularShape(final int xCoordinate, final int yCoordinate, final int width, final int heigth) {
 		super(xCoordinate, yCoordinate);
 
 		this.width = width;
-		this.heigth = heigth;
+		this.height = heigth;
 	}
 
 	@Override
@@ -24,11 +31,11 @@ public class RectangularShape extends PositionedShape implements RectangleShape 
 
 	@Override
 	public int getHeight() {
-		return heigth;
+		return height;
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() + " [width=" + width + ", heigth=" + heigth + "]";
+		return super.toString() + " [width=" + width + ", heigth=" + height + "]";
 	}
 }

@@ -69,6 +69,13 @@ public class Door extends Component {
 
 	private static final Style OPEN_STYLE = new ComponentStyle(RGBColor.WHITE, null, 0, null);
 
+	protected Door() {
+		super();
+		
+		this.room = new Room();
+		this.room.addDoor(this);
+	}
+	
 	public Door(final Room room, final Room.WALL wall, final int offset, final int doorWidth, final boolean open,
 			final String name) {
 		super(room.getFactory(), createShape(room, wall, offset, doorWidth), name);

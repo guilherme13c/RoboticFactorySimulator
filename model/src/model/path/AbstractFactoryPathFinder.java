@@ -23,6 +23,13 @@ public abstract class AbstractFactoryPathFinder<Graph, Vertex> implements Factor
 
 	private transient Graph graph;
 
+	protected AbstractFactoryPathFinder() {
+		super();
+		this.factoryModel = new Factory();
+		this.resolution = 0;
+		this.graph = null;
+	}
+	
 	public AbstractFactoryPathFinder(final Factory factoryModel, final int resolution) {
 		this.factoryModel = factoryModel;
 		this.resolution = resolution;

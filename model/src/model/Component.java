@@ -4,25 +4,35 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import fr.tp.inf112.projects.canvas.model.Figure;
 import fr.tp.inf112.projects.canvas.model.Shape;
 import fr.tp.inf112.projects.canvas.model.Style;
 import model.shapes.PositionedShape;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public abstract class Component implements Figure, Serializable, Runnable {
 
+	@JsonIgnore
 	private static transient Logger LOGGER = Logger.getLogger(Component.class.getName());
 
 	private static final long serialVersionUID = -5960950869184030220L;
 
 	private String id;
 
-	private final Factory factory;
+	private Factory factory;
 
-	private final PositionedShape positionedShape;
+	private PositionedShape positionedShape;
 
-	private final String name;
+	private String name;
 
+	protected Component() {
+		this(null, null, null);
+	}
+	
 	protected Component(final Factory factory, final PositionedShape shape, final String name) {
 		this.factory = factory;
 		this.positionedShape = shape;
@@ -131,6 +141,7 @@ public abstract class Component implements Figure, Serializable, Runnable {
 		return ComponentStyle.DEFAULT;
 	}
 
+	@JsonIgnore
 	@Override
 	public Shape getShape() {
 		return getPositionedShape();

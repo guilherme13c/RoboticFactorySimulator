@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import model.shapes.PositionedShape;
 import model.shapes.RectangularShape;
 
@@ -9,6 +10,10 @@ public class ChargingStation extends Component {
 
 	private boolean charging;
 
+	protected ChargingStation() {
+		super();
+	}
+	
 	public ChargingStation(final Room room, final RectangularShape shape, final String name) {
 		this(room.getFactory(), shape, name);
 	}
@@ -24,6 +29,7 @@ public class ChargingStation extends Component {
 		return super.toString() + "]";
 	}
 
+	@JsonGetter("carging")
 	protected boolean isCharging() {
 		return charging;
 	}

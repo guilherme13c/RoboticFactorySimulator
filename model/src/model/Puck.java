@@ -6,6 +6,10 @@ public class Puck extends Component {
 
 	private static final long serialVersionUID = -2194778403928041427L;
 
+	protected Puck() {
+		super();
+	}
+	
 	public Puck(final Factory factory, final CircularShape shape, final String name) {
 		super(factory, shape, name);
 	}

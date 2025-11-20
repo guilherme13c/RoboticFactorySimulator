@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import fr.tp.inf112.projects.canvas.controller.Observable;
 import fr.tp.inf112.projects.canvas.controller.Observer;
 import fr.tp.inf112.projects.canvas.model.Canvas;
@@ -13,6 +17,7 @@ import model.motion.Motion;
 import model.shapes.PositionedShape;
 import model.shapes.RectangularShape;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Factory extends Component implements Canvas, Observable {
 
 	private static final long serialVersionUID = 5156526483612458192L;
@@ -21,10 +26,17 @@ public class Factory extends Component implements Canvas, Observable {
 
 	private final List<Component> components;
 
+	@JsonIgnore
 	private transient List<Observer> observers;
 
+	@JsonIgnore
 	private transient boolean simulationStarted;
 
+	public Factory() {
+        super();
+        this.components = new ArrayList<>();
+    }
+	
 	public Factory(final int width, final int height, final String name) {
 		super(null, new RectangularShape(0, 0, width, height), name);
 
@@ -78,11 +90,12 @@ public class Factory extends Component implements Canvas, Observable {
 		return false;
 	}
 
-	protected List<Component> getComponents() {
+	public List<Component> getComponents() {
 		return components;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@JsonIgnore
 	@Override
 	public Collection<Figure> getFigures() {
 		return (Collection) components;

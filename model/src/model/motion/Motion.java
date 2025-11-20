@@ -8,6 +8,11 @@ public class Motion {
 
 	private final Position targetPosition;
 
+	public Motion() {
+		this.currentPosition = new Position();
+		this.targetPosition = new Position();
+	}
+	
 	public Motion(final Position currentPosition, final Position targetPosition) {
 		this.currentPosition = currentPosition;
 		this.targetPosition = targetPosition;

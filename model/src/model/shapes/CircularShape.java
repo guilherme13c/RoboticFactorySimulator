@@ -6,8 +6,14 @@ public class CircularShape extends PositionedShape implements OvalShape {
 
 	private static final long serialVersionUID = -1912941556210518344L;
 
-	private final int radius;
+	private int radius;
 
+	protected CircularShape() {
+		super();
+		
+		this.radius = 0;
+	}
+	
 	public CircularShape(final int xCoordinate, final int yCoordinate, final int radius) {
 		super(xCoordinate, yCoordinate);
 
@@ -22,6 +28,10 @@ public class CircularShape extends PositionedShape implements OvalShape {
 	@Override
 	public int getHeight() {
 		return getWidth();
+	}
+	
+	public int getRadius() {
+		return radius;
 	}
 
 	@Override

@@ -12,6 +12,10 @@ public class Area extends Component {
 
 	private Machine machine;
 
+	protected Area() {
+		super();
+	}
+	
 	public Area(final Room room, final RectangularShape shape, final String name) {
 		super(room.getFactory(), shape, name);
 
@@ -23,6 +27,10 @@ public class Area extends Component {
 	protected void setMachine(final Machine machine) {
 		this.machine = machine;
 	}
+	
+	public Machine getMachine() {
+        return machine;
+    }
 
 	@Override
 	public boolean canBeOverlayed(final PositionedShape shape) {

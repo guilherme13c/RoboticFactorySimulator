@@ -28,6 +28,16 @@ public class Room extends Component {
 
 	private final List<Door> doors;
 
+	protected Room() {
+		super();
+		this.leftWall = null;
+        this.rightWall = null;
+        this.topWall = null;
+        this.bottomWall = null;
+        this.areas = new ArrayList<>();
+        this.doors = new ArrayList<>();
+	}
+	
 	public Room(final Factory factory, final RectangularShape shape, final String name) {
 		super(factory, shape, name);
 
