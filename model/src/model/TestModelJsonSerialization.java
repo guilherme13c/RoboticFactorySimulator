@@ -31,7 +31,6 @@ class TestModelJsonSerialization {
         ) {}
     }
 	
-	@SuppressWarnings("unused")
 	private static transient Logger LOGGER = Logger.getLogger(TestModelJsonSerialization.class.getName());
 	
 	private final ObjectMapper objectMapper;
@@ -59,6 +58,9 @@ class TestModelJsonSerialization {
 		final String factoryAsJsonString = objectMapper.writeValueAsString(factory);
 				
 		final Factory roundTrip = objectMapper.readValue(factoryAsJsonString, Factory.class);
+		
+		LOGGER.info(factory.toString());
+		LOGGER.info(roundTrip.toString());
 		
 		assertEquals(factory.toString(), roundTrip.toString());
 	}
