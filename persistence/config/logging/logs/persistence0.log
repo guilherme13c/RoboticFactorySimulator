@@ -1,35 +1,27 @@
-Nov 20, 2025 6:42:04 PM persistence.server.FactoryPersistenceServer run
+Nov 21, 2025 5:53:06 PM persistence.server.FactoryPersistenceServer run
 INFO: server running on port: 9001
-Nov 20, 2025 6:42:04 PM persistence.server.FactoryPersistenceServer run
+Nov 21, 2025 5:53:06 PM persistence.server.FactoryPersistenceServer run
 INFO: accepted connection
-Nov 20, 2025 6:42:04 PM persistence.server.FactoryPersistenceServer run
-WARNING: null
-java.lang.NullPointerException
-	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:221)
-	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:118)
-	at persistence.model.FactoryPersistenceManager.persist(FactoryPersistenceManager.java:44)
-	at persistence.server.FactoryPersistenceServer.run(FactoryPersistenceServer.java:45)
-	at persistence.server.FactoryPersistenceServer.main(FactoryPersistenceServer.java:85)
+Nov 21, 2025 5:53:06 PM persistence.server.FactoryPersistenceServer run
+INFO: received: Factory [name=Simple Test Puck Factory xCoordinate=0, yCoordinate=0, shape=RectangularShape at Position = (0, 0) [width=200, heigth=200] components=[Room [name=Production Room 1 xCoordinate=20, yCoordinate=20, shape=RectangularShape at Position = (20, 20) [width=75, heigth=75] areas=[Area [name=Production Area 1 xCoordinate=35, yCoordinate=35, shape=RectangularShape at Position = (35, 35) [width=50, heigth=50] machine=Machine [name=Machine 1 xCoordinate=50, yCoordinate=50, shape=RectangularShape at Position = (50, 50) [width=15, heigth=15]]]]], Door [name=Entrance xCoordinate=30, yCoordinate=95, shape=RectangularShape at Position = (30, 95) [width=20, heigth=1]], Area [name=Production Area 1 xCoordinate=35, yCoordinate=35, shape=RectangularShape at Position = (35, 35) [width=50, heigth=50] machine=Machine [name=Machine 1 xCoordinate=50, yCoordinate=50, shape=RectangularShape at Position = (50, 50) [width=15, heigth=15]]], Machine [name=Machine 1 xCoordinate=50, yCoordinate=50, shape=RectangularShape at Position = (50, 50) [width=15, heigth=15]], Room [name=Production Room 2 xCoordinate=120, yCoordinate=22, shape=RectangularShape at Position = (120, 22) [width=75, heigth=75] areas=[Area [name=Production Area 1 xCoordinate=135, yCoordinate=35, shape=RectangularShape at Position = (135, 35) [width=50, heigth=50] machine=Machine [name=Machine 1 xCoordinate=150, yCoordinate=50, shape=RectangularShape at Position = (150, 50) [width=15, heigth=15]]]]], Door [name=Entrance xCoordinate=120, yCoordinate=32, shape=RectangularShape at Position = (120, 32) [width=1, heigth=20]], Area [name=Production Area 1 xCoordinate=135, yCoordinate=35, shape=RectangularShape at Position = (135, 35) [width=50, heigth=50] machine=Machine [name=Machine 1 xCoordinate=150, yCoordinate=50, shape=RectangularShape at Position = (150, 50) [width=15, heigth=15]]], Machine [name=Machine 1 xCoordinate=150, yCoordinate=50, shape=RectangularShape at Position = (150, 50) [width=15, heigth=15]], Room [name=Charging Room xCoordinate=125, yCoordinate=125, shape=RectangularShape at Position = (125, 125) [width=50, heigth=50] areas=[]], Door [name=Entrance xCoordinate=175, yCoordinate=135, shape=RectangularShape at Position = (175, 135) [width=1, heigth=20]], ChargingStation [name=Charging Station xCoordinate=150, yCoordinate=145, shape=RectangularShape at Position = (150, 145) [width=15, heigth=15]], Robot [name=Robot 1 xCoordinate=5, yCoordinate=5, shape=CircularShape at Position = (5, 5) [radius=2] battery=Battery [capacity=10.0]], Conveyor [name=Conveyor 1 xCoordinate=7, yCoordinate=165, shape=BasicPolygonShape at Position = (7, 165)], Robot [name=Robot 2 xCoordinate=45, yCoordinate=5, shape=CircularShape at Position = (45, 5) [radius=2] battery=Battery [capacity=10.0]], Conveyor [name=Conveyor 1 xCoordinate=7, yCoordinate=165, shape=BasicPolygonShape at Position = (7, 165)]]]
+Nov 21, 2025 5:53:06 PM persistence.server.FactoryPersistenceServer run
+INFO: persisting: Factory [name=Simple Test Puck Factory xCoordinate=0, yCoordinate=0, shape=RectangularShape at Position = (0, 0) [width=200, heigth=200] components=[Room [name=Production Room 1 xCoordinate=20, yCoordinate=20, shape=RectangularShape at Position = (20, 20) [width=75, heigth=75] areas=[Area [name=Production Area 1 xCoordinate=35, yCoordinate=35, shape=RectangularShape at Position = (35, 35) [width=50, heigth=50] machine=Machine [name=Machine 1 xCoordinate=50, yCoordinate=50, shape=RectangularShape at Position = (50, 50) [width=15, heigth=15]]]]], Door [name=Entrance xCoordinate=30, yCoordinate=95, shape=RectangularShape at Position = (30, 95) [width=20, heigth=1]], Area [name=Production Area 1 xCoordinate=35, yCoordinate=35, shape=RectangularShape at Position = (35, 35) [width=50, heigth=50] machine=Machine [name=Machine 1 xCoordinate=50, yCoordinate=50, shape=RectangularShape at Position = (50, 50) [width=15, heigth=15]]], Machine [name=Machine 1 xCoordinate=50, yCoordinate=50, shape=RectangularShape at Position = (50, 50) [width=15, heigth=15]], Room [name=Production Room 2 xCoordinate=120, yCoordinate=22, shape=RectangularShape at Position = (120, 22) [width=75, heigth=75] areas=[Area [name=Production Area 1 xCoordinate=135, yCoordinate=35, shape=RectangularShape at Position = (135, 35) [width=50, heigth=50] machine=Machine [name=Machine 1 xCoordinate=150, yCoordinate=50, shape=RectangularShape at Position = (150, 50) [width=15, heigth=15]]]]], Door [name=Entrance xCoordinate=120, yCoordinate=32, shape=RectangularShape at Position = (120, 32) [width=1, heigth=20]], Area [name=Production Area 1 xCoordinate=135, yCoordinate=35, shape=RectangularShape at Position = (135, 35) [width=50, heigth=50] machine=Machine [name=Machine 1 xCoordinate=150, yCoordinate=50, shape=RectangularShape at Position = (150, 50) [width=15, heigth=15]]], Machine [name=Machine 1 xCoordinate=150, yCoordinate=50, shape=RectangularShape at Position = (150, 50) [width=15, heigth=15]], Room [name=Charging Room xCoordinate=125, yCoordinate=125, shape=RectangularShape at Position = (125, 125) [width=50, heigth=50] areas=[]], Door [name=Entrance xCoordinate=175, yCoordinate=135, shape=RectangularShape at Position = (175, 135) [width=1, heigth=20]], ChargingStation [name=Charging Station xCoordinate=150, yCoordinate=145, shape=RectangularShape at Position = (150, 145) [width=15, heigth=15]], Robot [name=Robot 1 xCoordinate=5, yCoordinate=5, shape=CircularShape at Position = (5, 5) [radius=2] battery=Battery [capacity=10.0]], Conveyor [name=Conveyor 1 xCoordinate=7, yCoordinate=165, shape=BasicPolygonShape at Position = (7, 165)], Robot [name=Robot 2 xCoordinate=45, yCoordinate=5, shape=CircularShape at Position = (45, 5) [radius=2] battery=Battery [capacity=10.0]], Conveyor [name=Conveyor 1 xCoordinate=7, yCoordinate=165, shape=BasicPolygonShape at Position = (7, 165)]]]
+Nov 21, 2025 5:53:08 PM persistence.server.FactoryPersistenceServer run
+INFO: accepted connection
+Nov 21, 2025 5:53:08 PM persistence.server.FactoryPersistenceServer run
+INFO: received: Simple Test Puck Factory
+Nov 21, 2025 5:53:08 PM persistence.server.FactoryPersistenceServer run
+INFO: retrieving: Simple Test Puck Factory
+Nov 21, 2025 5:53:14 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Nov 20, 2025 6:42:06 PM persistence.server.FactoryPersistenceServer run
-INFO: accepted connection
-Nov 20, 2025 6:42:06 PM persistence.server.FactoryPersistenceServer run
-WARNING: java.io.FileNotFoundException: Simple Test Puck Factory (No such file or directory)
-java.io.IOException: java.io.FileNotFoundException: Simple Test Puck Factory (No such file or directory)
-	at persistence.model.FactoryPersistenceManager.read(FactoryPersistenceManager.java:34)
-	at persistence.server.FactoryPersistenceServer.run(FactoryPersistenceServer.java:41)
-	at persistence.server.FactoryPersistenceServer.main(FactoryPersistenceServer.java:85)
-Caused by: java.io.FileNotFoundException: Simple Test Puck Factory (No such file or directory)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:106)
-	at persistence.model.FactoryPersistenceManager.read(FactoryPersistenceManager.java:29)
-	... 2 more
-
-Nov 20, 2025 6:42:16 PM persistence.server.FactoryPersistenceServer run
-INFO: accepted connection
-Nov 20, 2025 6:42:33 PM java.lang.Shutdown logRuntimeExit
+Nov 21, 2025 5:53:14 PM java.lang.Shutdown logRuntimeExit
 FINE: Runtime.exit() called with status: 143
 java.lang.Throwable: Runtime.exit(143)
 	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)

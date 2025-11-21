@@ -2,12 +2,16 @@ package model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Position implements Serializable {
 
 	private static final long serialVersionUID = 7274819087013715987L;
 
+	@JsonProperty
 	private int xCoordinate;
 
+	@JsonProperty
 	private int yCoordinate;
 
 	public Position() {

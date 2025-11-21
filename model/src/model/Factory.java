@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import fr.tp.inf112.projects.canvas.controller.Observable;
 import fr.tp.inf112.projects.canvas.controller.Observer;
@@ -17,13 +16,13 @@ import model.motion.Motion;
 import model.shapes.PositionedShape;
 import model.shapes.RectangularShape;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Factory extends Component implements Canvas, Observable {
 
 	private static final long serialVersionUID = 5156526483612458192L;
 
 	private static final ComponentStyle DEFAULT = new ComponentStyle(5.0f);
 
+	 @JsonManagedReference
 	private final List<Component> components;
 
 	@JsonIgnore
@@ -31,7 +30,10 @@ public class Factory extends Component implements Canvas, Observable {
 
 	@JsonIgnore
 	private transient boolean simulationStarted;
-
+	
+	@JsonIgnore
+	private transient List<Thread> activeThreads = new ArrayList<>();
+	
 	public Factory() {
         super();
         this.components = new ArrayList<>();
@@ -43,6 +45,7 @@ public class Factory extends Component implements Canvas, Observable {
 		components = new ArrayList<>();
 		observers = null;
 		simulationStarted = false;
+		this.setId(name);
 	}
 
 	public List<Observer> getObservers() {
@@ -124,6 +127,15 @@ public class Factory extends Component implements Canvas, Observable {
 		if (isSimulationStarted()) {
 			this.simulationStarted = false;
 
+			if (activeThreads != null) {
+                for (Thread th : activeThreads) {
+                    if (th != null && th.isAlive()) {
+                        th.interrupt();
+                    }
+                }
+                activeThreads.clear();
+            }
+			
 			notifyObservers();
 		}
 	}
@@ -132,8 +144,13 @@ public class Factory extends Component implements Canvas, Observable {
 	public boolean behave() {
 		boolean behaved = true;
 
+		if (activeThreads == null) {
+            activeThreads = new ArrayList<>();
+        }
+		
 		for (final Component component : getComponents()) {
 			Thread th = new Thread(component);
+			activeThreads.add(th);
 			th.start();
 		}
 

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.tp.inf112.projects.canvas.model.Canvas;
 import fr.tp.inf112.projects.canvas.model.CanvasPersistenceManager;
 import model.Factory;
 
@@ -20,7 +19,7 @@ public class SimulationController {
 	private static Logger LOGGER = Logger.getLogger(SimulationController.class.getName());
 	
     private Map<String, Factory> models;
-    private CanvasPersistenceManager persistenceManager;    
+    private CanvasPersistenceManager persistenceManager;
        
     public SimulationController(CanvasPersistenceManager canvasPersistenceManager) {
     	persistenceManager = canvasPersistenceManager;
@@ -71,13 +70,8 @@ public class SimulationController {
             LOGGER.warning("Cannot stop simulation: No active model found for factoryId: " + factoryId);
             return false;
         }
-
-        try {
-            persistenceManager.persist((Canvas) factoryModel);
-            LOGGER.info("Simulation stopped and state persisted for factoryId: " + factoryId);
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to persist factory state after stopping for factoryId: " + factoryId, e);
-        }
+        
+        factoryModel.stopSimulation();
 
         return true;
     }

@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import fr.tp.inf112.projects.canvas.model.Style;
 import fr.tp.inf112.projects.canvas.model.impl.RGBColor;
 import model.shapes.PositionedShape;
@@ -63,6 +65,7 @@ public class Door extends Component {
 		return new RectangularShape(xCoordinate, yCoordinate, THICKNESS, doorWidth);
 	}
 
+	@JsonProperty
 	private boolean open;
 
 	private final Room room;

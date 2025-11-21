@@ -34,6 +34,10 @@ public class FactoryPersistenceManagerClient extends FactoryPersistenceManager {
 	 */
 	@Override
 	public void persist(Canvas canvasModel) throws IOException {
+		if (canvasModel.getId() == null) {
+			throw new IOException("Canvas missing ID");
+		}
+		
 		boolean connected = false;
 		
 		for (int i = 0; i < 100; i++) {

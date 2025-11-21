@@ -6,22 +6,21 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
-import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import fr.tp.inf112.projects.canvas.controller.Observer;
 import fr.tp.inf112.projects.canvas.model.Canvas;
 import fr.tp.inf112.projects.canvas.model.CanvasPersistenceManager;
+import fr.tp.inf112.projects.canvas.model.Vertex;
 import fr.tp.inf112.projects.canvas.model.impl.BasicVertex;
-import model.*;
-import model.shapes.*;
+import model.Factory;
 
 public class RemoteSimulationController extends SimulatorController {
 private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController.class.getName());
@@ -31,10 +30,11 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private volatile boolean simulationRunning;
+    private Thread updateViewThread;
 
     public RemoteSimulationController(Factory factoryModel, CanvasPersistenceManager persistenceManager, String simulationServiceUrl) {
         super(factoryModel, persistenceManager);
-        this.factoryId = factoryModel.getName();
+        this.factoryId = factoryModel.getId();
         this.simulationServiceUrl = simulationServiceUrl;
         this.httpClient = HttpClient.newBuilder()
         		.version(HttpClient.Version.HTTP_1_1)
@@ -43,17 +43,24 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
         this.simulationRunning = false;
     }
 
+    abstract static class BasicVertexMixin {
+        @JsonCreator
+        public BasicVertexMixin(
+            @JsonProperty("xCoordinate") int xCoordinate, 
+            @JsonProperty("yCoordinate") int yCoordinate
+        ) { }
+    }
+    
     private ObjectMapper createObjectMapper() {
-        final PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType(PositionedShape.class.getPackageName())
-                .allowIfSubType(Component.class.getPackageName())
-                .allowIfSubType(BasicVertex.class.getPackageName())
-                .allowIfSubType(ArrayList.class.getName())
-                .allowIfSubType(LinkedHashSet.class.getName())
-                .build();
-
         final ObjectMapper mapper = new ObjectMapper();
-        mapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
+
+        mapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.addMixIn(BasicVertex.class, BasicVertexMixin.class);
+        
+        SimpleModule module = new SimpleModule();
+        module.addAbstractTypeMapping(Vertex.class, BasicVertex.class);
+        mapper.registerModule(module);
+        
         return mapper;
     }
 
@@ -76,8 +83,13 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
             
             if (response.statusCode() == 200) {
                 simulationRunning = true;
-                // 2. Start the viewer update loop in a separate thread
-                new Thread(this::updateViewer).start();
+                
+                if (updateViewThread != null) {
+                	updateViewThread.interrupt();
+                }
+                
+                updateViewThread = new Thread(this::updateViewer);
+                updateViewThread.start();
             } else {
                 LOGGER.log(Level.SEVERE, "Failed to start simulation: " + response.body());
             }
@@ -110,6 +122,7 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
     }
 
     private void updateViewer() {
+    	LOGGER.info("Starting viewer update loop...");
         while (simulationRunning) {
             try {
             	String url = String.format("%s?factoryId=%s", simulationServiceUrl, getEncodedFactoryId());
@@ -122,9 +135,21 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
+                LOGGER.info("DEBUG JSON: " + response.body());
                 if (response.statusCode() == 200) {
                     Factory remoteFactory = objectMapper.readValue(response.body(), Factory.class);
-                    setCanvas(remoteFactory);
+                    
+                    SwingUtilities.invokeLater(() -> {
+                        Factory localFactory = (Factory) getCanvas();
+                        
+                        if (localFactory != null) {
+                            localFactory.getComponents().clear();
+                            
+                            localFactory.getComponents().addAll(remoteFactory.getComponents());
+                            
+                            localFactory.notifyObservers();
+                        }
+                    });
                 }
                 
                 Thread.sleep(25);
@@ -139,15 +164,6 @@ private static final Logger LOGGER = Logger.getLogger(RemoteSimulationController
 
     @Override
     public void setCanvas(final Canvas canvasModel) {
-        Canvas oldCanvas = getCanvas();
-        final List<Observer> observers = ((Factory)oldCanvas).getObservers(); 
-        
-        super.setCanvas(canvasModel);
-        
-        for (final Observer observer : observers) {
-            ((Factory)getCanvas()).addObserver(observer);
-        }
-        
-        ((Factory)getCanvas()).notifyObservers();
+    	super.setCanvas(canvasModel);
     }
 }

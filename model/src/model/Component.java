@@ -4,16 +4,20 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import fr.tp.inf112.projects.canvas.model.Figure;
 import fr.tp.inf112.projects.canvas.model.Shape;
 import fr.tp.inf112.projects.canvas.model.Style;
 import model.shapes.PositionedShape;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.CLASS, 
+    include = JsonTypeInfo.As.PROPERTY, 
+    property = "@class"
+)
 public abstract class Component implements Figure, Serializable, Runnable {
 
 	@JsonIgnore
@@ -23,6 +27,7 @@ public abstract class Component implements Figure, Serializable, Runnable {
 
 	private String id;
 
+	@JsonBackReference
 	private Factory factory;
 
 	private PositionedShape positionedShape;
@@ -153,10 +158,13 @@ public abstract class Component implements Figure, Serializable, Runnable {
 
 	@Override
 	public void run() {
-		while (isSimulationStarted()) {
-			behave();
+		while (isSimulationStarted() && !Thread.currentThread().isInterrupted()) {
 			try {
+				behave();
 				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				break;
 			} catch (Exception e) {
 				LOGGER.log(Level.SEVERE, e.getStackTrace().toString());
 			}

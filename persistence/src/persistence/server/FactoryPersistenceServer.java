@@ -37,17 +37,23 @@ public class FactoryPersistenceServer {
 
 				Object obj = in.readObject();
 
+				LOGGER.info("received: " + obj.toString());
+				
 				if (obj instanceof String) {
+					LOGGER.info("retrieving: " + obj.toString());
 					final Canvas canvasModel = fpm.read((String) obj);
 					out.writeObject(canvasModel);
 					out.flush();
-				} else if (obj instanceof Factory) {
+				} else if (obj instanceof Canvas) {
+					LOGGER.info("persisting: " + ((Factory) obj).toString());
 					fpm.persist((Factory) obj);
 				} else {
 					LOGGER.log(Level.INFO, "obj is neither String or Factory");
 				}
 			} catch (Exception e) {
 				LOGGER.log(Level.WARNING, e.getMessage(), e);
+			} finally {
+				clientSocket.close();
 			}
 		}
 	}
