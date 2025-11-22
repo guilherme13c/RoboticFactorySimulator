@@ -22,56 +22,60 @@ public class Factory extends Component implements Canvas, Observable {
 
 	private static final ComponentStyle DEFAULT = new ComponentStyle(5.0f);
 
-	 @JsonManagedReference
+	@JsonManagedReference
 	private final List<Component> components;
 
 	@JsonIgnore
-	private transient List<Observer> observers;
+	private transient FactoryModelChangedNotifier notifier;
 
 	@JsonIgnore
 	private transient boolean simulationStarted;
-	
+
 	@JsonIgnore
 	private transient List<Thread> activeThreads = new ArrayList<>();
-	
+
 	public Factory() {
-        super();
-        this.components = new ArrayList<>();
-    }
-	
+		super();
+		this.components = new ArrayList<>();
+		this.notifier = new LocalFactoryModelChangedNotifier();
+	}
+
 	public Factory(final int width, final int height, final String name) {
 		super(null, new RectangularShape(0, 0, width, height), name);
 
 		components = new ArrayList<>();
-		observers = null;
+		notifier = new LocalFactoryModelChangedNotifier();
 		simulationStarted = false;
 		this.setId(name);
 	}
 
-	public List<Observer> getObservers() {
-		if (observers == null) {
-			observers = new ArrayList<>();
-		}
-
-		return observers;
-	}
+	public void setNotifier(FactoryModelChangedNotifier notifier) {
+        this.notifier = notifier;
+    }
 
 	@Override
-	public boolean addObserver(Observer observer) {
-		return getObservers().add(observer);
-	}
+    public boolean addObserver(Observer observer) {
+        if (notifier == null) {
+            return false;
+        }
+        return notifier.addObserver(observer);
+    }
 
 	@Override
-	public boolean removeObserver(Observer observer) {
-		return getObservers().remove(observer);
-	}
+    public boolean removeObserver(Observer observer) {
+        if (notifier == null) {
+        	return false;
+        }
+        return notifier.removeObserver(observer);
+    }
 
 	@Override
-	public void notifyObservers() {
-		for (final Observer observer : getObservers()) {
-			observer.modelChanged();
-		}
-	}
+    public void notifyObservers() {
+        if (notifier == null) {
+        	return;
+        }
+        notifier.notifyObservers();
+    }
 
 	public boolean addComponent(final Component component) {
 		if (components.add(component)) {
@@ -128,14 +132,14 @@ public class Factory extends Component implements Canvas, Observable {
 			this.simulationStarted = false;
 
 			if (activeThreads != null) {
-                for (Thread th : activeThreads) {
-                    if (th != null && th.isAlive()) {
-                        th.interrupt();
-                    }
-                }
-                activeThreads.clear();
-            }
-			
+				for (Thread th : activeThreads) {
+					if (th != null && th.isAlive()) {
+						th.interrupt();
+					}
+				}
+				activeThreads.clear();
+			}
+
 			notifyObservers();
 		}
 	}
@@ -145,9 +149,9 @@ public class Factory extends Component implements Canvas, Observable {
 		boolean behaved = true;
 
 		if (activeThreads == null) {
-            activeThreads = new ArrayList<>();
-        }
-		
+			activeThreads = new ArrayList<>();
+		}
+
 		for (final Component component : getComponents()) {
 			Thread th = new Thread(component);
 			activeThreads.add(th);

@@ -20,11 +20,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+
+import fr.tp.inf112.projects.canvas.controller.Observer;
 import fr.tp.inf112.projects.canvas.model.Canvas;
 import fr.tp.inf112.projects.canvas.model.CanvasPersistenceManager;
 import fr.tp.inf112.projects.canvas.model.impl.BasicVertex;
 import model.Component;
 import model.Factory;
+import model.LocalFactoryModelChangedNotifier;
 import model.shapes.PositionedShape;
 
 public class RemoteSimulationController extends SimulatorController {
@@ -35,8 +38,9 @@ public class RemoteSimulationController extends SimulatorController {
 	private final HttpClient httpClient;
 	private final ObjectMapper objectMapper;
 	private volatile boolean simulationRunning;
-	private Thread updateViewThread;
-
+	private Thread consumerThread;
+	private final LocalFactoryModelChangedNotifier viewNotifier;
+	
 	public RemoteSimulationController(Factory factoryModel, CanvasPersistenceManager persistenceManager,
 			String simulationServiceUrl) {
 		super(factoryModel, persistenceManager);
@@ -45,6 +49,7 @@ public class RemoteSimulationController extends SimulatorController {
 		this.httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
 		this.objectMapper = createObjectMapper();
 		this.simulationRunning = false;
+		this.viewNotifier = new LocalFactoryModelChangedNotifier();
 	}
 
 	@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.ANY)
@@ -85,6 +90,10 @@ public class RemoteSimulationController extends SimulatorController {
 		return URLEncoder.encode(factoryId, StandardCharsets.UTF_8);
 	}
 
+	protected String getFactoryId() {
+		return factoryId;
+	}
+	
 	@Override
 	public void startAnimation() {
 		try {
@@ -99,12 +108,15 @@ public class RemoteSimulationController extends SimulatorController {
 			if (response.statusCode() == 200) {
 				simulationRunning = true;
 
-				if (updateViewThread != null && updateViewThread.isAlive()) {
-					updateViewThread.interrupt();
-				}
+				if (consumerThread != null && consumerThread.isAlive()) {
+                    consumerThread.interrupt();
+                }
 
-				updateViewThread = new Thread(this::updateViewer);
-				updateViewThread.start();
+				consumerThread = new Thread(() -> {
+                    FactorySimulationEventConsumer consumer = new FactorySimulationEventConsumer(this);
+                    consumer.consumeMessages();
+                });
+                consumerThread.start();
 			} else {
 				LOGGER.log(Level.SEVERE, "Failed to start simulation: " + response.body());
 			}
@@ -117,6 +129,7 @@ public class RemoteSimulationController extends SimulatorController {
 	public void stopAnimation() {
 		try {
 			simulationRunning = false;
+			
 			String url = String.format("%s/stop?factoryId=%s", simulationServiceUrl, getEncodedFactoryId());
 			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
 					.POST(HttpRequest.BodyPublishers.noBody()).build();
@@ -134,46 +147,37 @@ public class RemoteSimulationController extends SimulatorController {
 		return simulationRunning;
 	}
 
-	private void updateViewer() {
-		LOGGER.info("Starting viewer update loop...");
-		while (simulationRunning) {
-			try {
-				String url = String.format("%s?factoryId=%s", simulationServiceUrl, getEncodedFactoryId());
-				HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
+	public void updateCanvasFromJSON(String json) {
+        try {
+            Factory remoteFactory = objectMapper.readValue(json, Factory.class);
 
-				LOGGER.info(request.toString());
+            SwingUtilities.invokeLater(() -> {
+                Factory localFactory = (Factory) getCanvas();
 
-				HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-				LOGGER.info("DEBUG JSON: " + response.body());
-				if (response.statusCode() == 200) {
-					Factory remoteFactory = objectMapper.readValue(response.body(), Factory.class);
-
-					SwingUtilities.invokeLater(() -> {
-						Factory localFactory = (Factory) getCanvas();
-
-						if (localFactory != null) {
-							localFactory.getComponents().clear();
-
-							localFactory.getComponents().addAll(remoteFactory.getComponents());
-
-							localFactory.notifyObservers();
-						}
-					});
-				}
-
-				Thread.sleep(25);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				break;
-			} catch (Exception e) {
-				LOGGER.log(Level.WARNING, "Error updating viewer", e);
-			}
-		}
-	}
+                if (localFactory != null) {
+                    localFactory.getComponents().clear();
+                    localFactory.getComponents().addAll(remoteFactory.getComponents());
+                    
+                    viewNotifier.notifyObservers();
+                }
+            });
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Error parsing JSON from Kafka", e);
+        }
+    }
 
 	@Override
 	public void setCanvas(final Canvas canvasModel) {
 		super.setCanvas(canvasModel);
 	}
+	
+	@Override
+    public boolean addObserver(Observer observer) {
+        return viewNotifier.addObserver(observer);
+    }
+
+    @Override
+    public boolean removeObserver(Observer observer) {
+        return viewNotifier.removeObserver(observer);
+    }
 }

@@ -37,5 +37,7 @@
 	<classpathentry kind="lib" path="/home/guilherme13c/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.19.2/jackson-databind-2.19.2.jar"/>
 	<classpathentry kind="lib" path="/home/guilherme13c/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.19.2/jackson-core-2.19.2.jar"/>
 	<classpathentry kind="lib" path="/home/guilherme13c/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.20/jackson-annotations-2.20.jar"/>
+	<classpathentry kind="lib" path="/Kafka/libs/kafka-clients-3.9.0.jar"/>
+	<classpathentry kind="lib" path="/Kafka/libs/slf4j-api-1.7.36.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.tp.inf112.projects.canvas.model.CanvasPersistenceManager;
 import model.Factory;
+import model.FactoryModelChangedNotifier;
+import server.KafkaFactoryModelChangeNotifier;
 
 @RestController
 public class SimulationController {
@@ -26,6 +29,9 @@ public class SimulationController {
 	
 	@Autowired
 	private ObjectMapper objectMapper;
+	
+	@Autowired
+    private KafkaTemplate<String, Factory> simulationEventTemplate;
 
 	public SimulationController(CanvasPersistenceManager canvasPersistenceManager) {
 		persistenceManager = canvasPersistenceManager;
@@ -45,6 +51,9 @@ public class SimulationController {
 			LOGGER.log(Level.SEVERE, "Failed to load factory configuration for factoryId: " + factoryId, e);
 			return false;
 		}
+		
+		FactoryModelChangedNotifier notifier = new KafkaFactoryModelChangeNotifier(factory, simulationEventTemplate);
+        factory.setNotifier(notifier);
 
 		factory.startSimulation();
 		models.put(factoryId, factory);
@@ -86,6 +95,8 @@ public class SimulationController {
 		}
 
 		factoryModel.stopSimulation();
+		
+		factoryModel.setNotifier(null);
 
 		return true;
 	}
