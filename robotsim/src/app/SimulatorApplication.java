@@ -12,21 +12,9 @@ import controller.RemoteSimulationController;
 import fr.tp.inf112.projects.canvas.model.impl.BasicVertex;
 import fr.tp.inf112.projects.canvas.view.CanvasViewer;
 import fr.tp.inf112.projects.canvas.view.FileCanvasChooser;
-import model.Area;
-import model.Battery;
-import model.ChargingStation;
-import model.Conveyor;
-import model.Door;
-import model.Factory;
-import model.Machine;
-import model.Robot;
-import model.Room;
-import model.path.CustomDijkstraFactoryPathFinder;
-import model.path.FactoryPathFinder;
-import model.path.JGraphTDijkstraFactoryPathFinder;
-import model.shapes.BasicPolygonShape;
-import model.shapes.CircularShape;
-import model.shapes.RectangularShape;
+import model.*;
+import model.shapes.*;
+import model.path.*;
 import persistence.client.FactoryPersistenceManagerClient;
 
 public class SimulatorApplication {
