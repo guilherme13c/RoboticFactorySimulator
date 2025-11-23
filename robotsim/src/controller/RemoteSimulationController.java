@@ -40,7 +40,7 @@ public class RemoteSimulationController extends SimulatorController {
 	private volatile boolean simulationRunning;
 	private Thread consumerThread;
 	private final LocalFactoryModelChangedNotifier viewNotifier;
-	
+
 	public RemoteSimulationController(Factory factoryModel, CanvasPersistenceManager persistenceManager,
 			String simulationServiceUrl) {
 		super(factoryModel, persistenceManager);
@@ -54,33 +54,29 @@ public class RemoteSimulationController extends SimulatorController {
 
 	@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.ANY)
 	abstract static class BasicVertexMixin {
-        @JsonCreator
-        public BasicVertexMixin(
-            @JsonProperty("xCoordinate") int xCoordinate, 
-            @JsonProperty("yCoordinate") int yCoordinate
-        ) { }
-        
-        @JsonProperty("xCoordinate")
-        abstract int getxCoordinate();
+		@JsonCreator
+		public BasicVertexMixin(@JsonProperty("xCoordinate") int xCoordinate,
+				@JsonProperty("yCoordinate") int yCoordinate) {
+		}
 
-        @JsonProperty("yCoordinate")
-        abstract int getyCoordinate();
-    }
+		@JsonProperty("xCoordinate")
+		abstract int getxCoordinate();
+
+		@JsonProperty("yCoordinate")
+		abstract int getyCoordinate();
+	}
 
 	private ObjectMapper createObjectMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
 
 		PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
-				 .allowIfSubType(PositionedShape.class.getPackageName())
-				 .allowIfSubType(Component.class.getPackageName())
-				 .allowIfSubType(BasicVertex.class.getPackageName())
-				 .allowIfSubType(ArrayList.class.getName())
-				 .allowIfSubType(LinkedHashSet.class.getName())
-				 .build();
-		
+				.allowIfSubType(PositionedShape.class.getPackageName()).allowIfSubType(Component.class.getPackageName())
+				.allowIfSubType(BasicVertex.class.getPackageName()).allowIfSubType(ArrayList.class.getName())
+				.allowIfSubType(LinkedHashSet.class.getName()).build();
+
 		mapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		
+
 		mapper.addMixIn(BasicVertex.class, BasicVertexMixin.class);
 
 		return mapper;
@@ -93,7 +89,7 @@ public class RemoteSimulationController extends SimulatorController {
 	protected String getFactoryId() {
 		return factoryId;
 	}
-	
+
 	@Override
 	public void startAnimation() {
 		try {
@@ -109,14 +105,14 @@ public class RemoteSimulationController extends SimulatorController {
 				simulationRunning = true;
 
 				if (consumerThread != null && consumerThread.isAlive()) {
-                    consumerThread.interrupt();
-                }
+					consumerThread.interrupt();
+				}
 
 				consumerThread = new Thread(() -> {
-                    FactorySimulationEventConsumer consumer = new FactorySimulationEventConsumer(this);
-                    consumer.consumeMessages();
-                });
-                consumerThread.start();
+					FactorySimulationEventConsumer consumer = new FactorySimulationEventConsumer(this);
+					consumer.consumeMessages();
+				});
+				consumerThread.start();
 			} else {
 				LOGGER.log(Level.SEVERE, "Failed to start simulation: " + response.body());
 			}
@@ -129,7 +125,7 @@ public class RemoteSimulationController extends SimulatorController {
 	public void stopAnimation() {
 		try {
 			simulationRunning = false;
-			
+
 			String url = String.format("%s/stop?factoryId=%s", simulationServiceUrl, getEncodedFactoryId());
 			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
 					.POST(HttpRequest.BodyPublishers.noBody()).build();
@@ -148,36 +144,38 @@ public class RemoteSimulationController extends SimulatorController {
 	}
 
 	public void updateCanvasFromJSON(String json) {
-        try {
-            Factory remoteFactory = objectMapper.readValue(json, Factory.class);
+		try {
+			Factory remoteFactory = objectMapper.readValue(json, Factory.class);
 
-            SwingUtilities.invokeLater(() -> {
-                Factory localFactory = (Factory) getCanvas();
+			SwingUtilities.invokeLater(() -> {
+				Factory localFactory = (Factory) getCanvas();
 
-                if (localFactory != null) {
-                    localFactory.getComponents().clear();
-                    localFactory.getComponents().addAll(remoteFactory.getComponents());
-                    
-                    viewNotifier.notifyObservers();
-                }
-            });
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Error parsing JSON from Kafka", e);
-        }
-    }
+				if (localFactory == null) {
+					return;
+				}
+				localFactory.getComponents().clear();
+				localFactory.getComponents().addAll(remoteFactory.getComponents());
+
+				viewNotifier.notifyObservers();
+
+			});
+		} catch (Exception e) {
+			LOGGER.log(Level.WARNING, "Error parsing JSON from Kafka", e);
+		}
+	}
 
 	@Override
 	public void setCanvas(final Canvas canvasModel) {
 		super.setCanvas(canvasModel);
 	}
-	
-	@Override
-    public boolean addObserver(Observer observer) {
-        return viewNotifier.addObserver(observer);
-    }
 
-    @Override
-    public boolean removeObserver(Observer observer) {
-        return viewNotifier.removeObserver(observer);
-    }
+	@Override
+	public boolean addObserver(Observer observer) {
+		return viewNotifier.addObserver(observer);
+	}
+
+	@Override
+	public boolean removeObserver(Observer observer) {
+		return viewNotifier.removeObserver(observer);
+	}
 }
